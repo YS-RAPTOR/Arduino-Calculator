@@ -118,6 +118,7 @@ String Calculator::Calculate(String expression) {
 
             // Push to Digit Stack if Previous Token was a Number
             PushDigit(numberStr);
+            decimalFlag = false;
 
             // Token Code End
 
@@ -148,6 +149,7 @@ String Calculator::Calculate(String expression) {
 
             // Push to Digit Stack if Previous Token was a Number
             PushDigit(numberStr);
+            decimalFlag = false;
 
             // Token Code End
 
