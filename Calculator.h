@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Keypad.h>
+#include <LiquidCrystal.h>
 
 #define MAX_EXPRESSION_LENGTH 256
 #define NumberOfOperators 4
@@ -28,10 +30,34 @@ struct Calculator {
         double PeekDigit();
         void Clear();
 
+        // Devices
+        LiquidCrystal* lcd;
+        Keypad* keypad;
+        bool power;
+
+        // Memory
+        char key;
+        String tokens[MAX_EXPRESSION_LENGTH];
+        String currentToken = "";
+        char prevToken;
+        byte currentTokenIndex = 0;
+        String expression = "";
+
+        // Input Functions
+        void PollInput();
+        void ProcessInput();
+        bool HandleRepetition();
+
+        // Output Functions
+        void DisplayExpression();
+        void DisplayAnswer(String answer);
+        void ToggleDisplay();
+
         // Constructors/Initializers
         Calculator();
+        void begin(LiquidCrystal* lcd, Keypad* keypad);
 
         // Calculate Functions
         double ApplyOperation(double num1, double num2, char op);
-        String Calculate(String expression);
+        String Calculate();
 };

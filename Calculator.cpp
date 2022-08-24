@@ -54,7 +54,7 @@ void Calculator::Clear() {
     digitStackTop = 0;
 }
 
-String Calculator::Calculate(String expression) {
+String Calculator::Calculate() {
     Clear();
     char c = ' ';
     String numberStr = "";
@@ -203,7 +203,125 @@ double Calculator::ApplyOperation(double num1, double num2, char op) {
     }
 }
 
+// Input Functions
+void Calculator::PollInput() {
+    key = keypad->getKey();
+
+    if (key) {
+        ProcessInput();
+    }
+}
+
+void Calculator::ProcessInput() {
+    if (HandleRepetition()) {
+        return;
+    }
+
+    // remembers the previous key when the process restarts
+    prevToken = key;
+
+    switch (key) {
+        case '*':
+        case '+':
+        case '-':
+            // to store the inputs (number) before the operator
+            if (currentToken != "") {
+                tokens[currentTokenIndex] = currentToken;
+                currentTokenIndex++;
+            }
+            expression += key;
+            DisplayExpression();
+            // to store the operator input
+            tokens[currentTokenIndex] = key;
+            currentTokenIndex++;
+            currentToken = "";
+
+            return;
+            break;
+
+        case '=':
+            currentToken[currentTokenIndex] = key;
+            currentTokenIndex++;
+            DisplayAnswer(Calculate());
+            expression = "";
+            return;
+            break;
+
+        // turns on/off and reset the input
+        case 'o':
+            ToggleDisplay();
+            memset(tokens, 0, sizeof(tokens));
+            currentTokenIndex = 0;
+            prevToken = 0;
+            currentToken = "";
+            return;
+            break;
+    }
+
+    if (power) {
+        currentToken += key;
+        expression += key;
+        DisplayExpression();
+    }
+}
+
+bool Calculator::HandleRepetition() {
+    // prevents entering operator if there's no input unless it's "-"
+    if (prevToken == 0 && currentTokenIndex == 0 && (key == '*' || key == '+')) {
+        return true;
+    }
+
+    // prevents repeating dots
+    if (key == '.' && currentToken.indexOf('.') >= 0) {
+        return true;
+    }
+
+    // prevents consecutive operations
+    if (prevToken == '-' && key == '-') {
+        return true;
+    }
+
+    if (prevToken == '+' && key == '+') {
+        return true;
+    }
+
+    if (prevToken == '*' && key == '*') {
+        return true;
+    }
+
+    return false;
+}
+
 // Constructors/Initializers
 Calculator::Calculator() {
     Clear();
+}
+
+void Calculator::begin(LiquidCrystal* lcd, Keypad* keypad) {
+    this->lcd = lcd;
+    this->keypad = keypad;
+}
+
+void Calculator::DisplayExpression() {
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print(expression);
+}
+
+// print answer
+void Calculator::DisplayAnswer(String answer) {
+    lcd->setCursor(0, 1);
+    lcd->print(answer);
+}
+
+void Calculator::ToggleDisplay() {
+    if (power == 0) {
+        digitalWrite(16, HIGH);
+        power = 1;
+    } else {
+        digitalWrite(16, LOW);
+        lcd->clear();
+        expression = "";
+        power = 0;
+    }
 }
