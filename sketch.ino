@@ -1,11 +1,6 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
 
-/* Code to Test Calculator Calculate Function */
-
-// TODO Fix -+-+-+ Error
-// TODO Fix - can be entered when off
-
 #include "Calculator.h"
 
 // Keypad initializing

@@ -185,7 +185,7 @@ String Calculator::Calculate() {
         PopOperator();
     }
 
-    return String(PeekDigit());
+    return String(PeekDigit(), 4);
 }
 
 double Calculator::ApplyOperation(double num1, double num2, char op) {
@@ -213,6 +213,15 @@ void Calculator::PollInput() {
 }
 
 void Calculator::ProcessInput() {
+    if (key == 'o') {
+        ToggleDisplay();
+        return;
+    }
+
+    if (!power) {
+        return;
+    }
+
     if (HandleRepetition()) {
         return;
     }
@@ -226,13 +235,11 @@ void Calculator::ProcessInput() {
         case '-':
             // to store the inputs (number) before the operator
             if (currentToken != "") {
-                tokens[currentTokenIndex] = currentToken;
                 currentTokenIndex++;
             }
             expression += key;
             DisplayExpression();
             // to store the operator input
-            tokens[currentTokenIndex] = key;
             currentTokenIndex++;
             currentToken = "";
 
@@ -243,17 +250,7 @@ void Calculator::ProcessInput() {
             currentToken[currentTokenIndex] = key;
             currentTokenIndex++;
             DisplayAnswer(Calculate());
-            expression = "";
-            return;
-            break;
-
-        // turns on/off and reset the input
-        case 'o':
-            ToggleDisplay();
-            memset(tokens, 0, sizeof(tokens));
-            currentTokenIndex = 0;
-            prevToken = 0;
-            currentToken = "";
+            Reset();
             return;
             break;
     }
@@ -315,13 +312,15 @@ void Calculator::DisplayAnswer(String answer) {
 }
 
 void Calculator::ToggleDisplay() {
-    if (power == 0) {
-        digitalWrite(16, HIGH);
-        power = 1;
-    } else {
-        digitalWrite(16, LOW);
-        lcd->clear();
-        expression = "";
-        power = 0;
-    }
+    power = !power;
+    lcd->clear();
+    Reset();
+    digitalWrite(16, power);
+}
+
+void Calculator::Reset() {
+    expression = "";
+    currentTokenIndex = 0;
+    prevToken = 0;
+    currentToken = "";
 }

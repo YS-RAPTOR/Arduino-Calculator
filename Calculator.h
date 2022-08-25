@@ -6,7 +6,7 @@
 
 #define MAX_EXPRESSION_LENGTH 256
 #define NumberOfOperators 4
-#define FORMAT_ERROR "Error: Expression is not formatted correctly"
+#define FORMAT_ERROR "Syntax Error"
 static const char OPERATORS[NumberOfOperators] = {'+', '-', '*', '/'};
 static const char MULTIPLIERS[] = {'+', '-'};
 inline bool IsOperator(char c);
@@ -37,7 +37,6 @@ struct Calculator {
 
         // Memory
         char key;
-        String tokens[MAX_EXPRESSION_LENGTH];
         String currentToken = "";
         char prevToken;
         byte currentTokenIndex = 0;
@@ -56,6 +55,7 @@ struct Calculator {
         // Constructors/Initializers
         Calculator();
         void begin(LiquidCrystal* lcd, Keypad* keypad);
+        void Reset();
 
         // Calculate Functions
         double ApplyOperation(double num1, double num2, char op);
