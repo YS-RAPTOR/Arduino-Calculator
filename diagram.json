@@ -13,8 +13,8 @@
     {
       "type": "wokwi-membrane-keypad",
       "id": "keypad1",
-      "top": -281.46,
-      "left": 38.49,
+      "top": -379.27,
+      "left": 127.74,
       "attrs": {
         "keys": [
           "1",
@@ -44,13 +44,6 @@
       "attrs": {}
     },
     {
-      "type": "wokwi-potentiometer",
-      "id": "pot1",
-      "top": -122.49,
-      "left": -335.71,
-      "attrs": {}
-    },
-    {
       "type": "wokwi-resistor",
       "id": "r1",
       "top": -9.04,
@@ -67,15 +60,7 @@
     ["keypad1:R3", "mega:7", "green", ["v0"]],
     ["keypad1:R2", "mega:8", "green", ["v0"]],
     ["keypad1:R1", "mega:9", "green", ["v0"]],
-    ["pot1:SIG", "lcd1:V0", "green", ["v24.72", "h70.77"]],
     ["mega:5V", "lcd1:VDD", "red", ["v25.14", "h-0.06"]],
-    [
-      "mega:5V",
-      "pot1:VCC",
-      "red",
-      ["v22.37", "h-369.27", "v-364.75", "h-56.91", "v-0.75"]
-    ],
-    ["mega:GND.1", "pot1:GND", "black", ["v-20.06", "h-411.69"]],
     ["mega:GND.1", "lcd1:VSS", "black", ["v-19.88", "h-333.67", "v-0.4"]],
     [
       "mega:GND.1",

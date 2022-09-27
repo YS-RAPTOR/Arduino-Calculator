@@ -2,20 +2,24 @@
 
 // Helper Functions
 
+// Defines which character is an operator
 inline bool IsOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
+// Defines which operator is a multiplier. Allows expressions like 5*-2
 inline bool IsMultiplier(char c) {
     return c == '+' || c == '-';
 }
 
+// Defines Precedence for BODMAS/PEMDAS
 inline byte Precedence(char op) {
     return (op == '+' || op == '-') ? 1 : (op == '*' || op == '/') ? 2
                                                                    : 0;
 }
 
 // Stack Functions
+// Pushes value to the a given stack
 void Calculator::PushOperator(char op) {
     operatorStack[operatorStackTop] = op;
     operatorStackTop++;
@@ -33,6 +37,7 @@ void Calculator::PushDigit(String& digit) {
     }
 }
 
+// Pops value from the a given stack
 void Calculator::PopOperator() {
     operatorStackTop--;
 }
@@ -41,6 +46,7 @@ void Calculator::PopDigit() {
     digitStackTop--;
 }
 
+// Returns value from the a given stack
 char Calculator::PeekOperator() {
     return operatorStack[operatorStackTop - 1];
 }
@@ -49,6 +55,7 @@ double Calculator::PeekDigit() {
     return digitStack[digitStackTop - 1];
 }
 
+// Resets the stacks for future use
 void Calculator::Clear() {
     operatorStackTop = 0;
     digitStackTop = 0;
@@ -204,6 +211,7 @@ double Calculator::ApplyOperation(double num1, double num2, char op) {
 }
 
 // Input Functions
+// Polls continuosly for input
 void Calculator::PollInput() {
     key = keypad->getKey();
 
@@ -213,30 +221,30 @@ void Calculator::PollInput() {
 }
 
 void Calculator::ProcessInput() {
+    // Checks if the On/Off button is pressed
     if (key == 'o') {
         ToggleDisplay();
         return;
     }
 
+    // If power is off dont do anything
     if (!power) {
         return;
     }
 
+    // Handles Repetition
     if (HandleRepetition()) {
         return;
     }
 
-    // remembers the previous key when the process restarts
+    // Remembers the previous key when the process restarts
     prevToken = key;
 
+    // Checks if the key is an operator
     switch (key) {
         case '*':
         case '+':
         case '-':
-            // to store the inputs (number) before the operator
-            if (currentToken != "") {
-                currentTokenIndex++;
-            }
             expression += key;
             DisplayExpression();
             // to store the operator input
@@ -244,17 +252,16 @@ void Calculator::ProcessInput() {
             currentToken = "";
 
             return;
-            break;
 
         case '=':
-            currentToken[currentTokenIndex] = key;
+            // Calculate and Display answer if Equal is pressed.
             currentTokenIndex++;
             DisplayAnswer(Calculate());
             Reset();
             return;
-            break;
     }
 
+    // If on the the key is displayed in the LCD
     if (power) {
         currentToken += key;
         expression += key;
@@ -294,23 +301,26 @@ Calculator::Calculator() {
     Clear();
 }
 
+// Initializes the LCD and Keypad
 void Calculator::begin(LiquidCrystal* lcd, Keypad* keypad) {
     this->lcd = lcd;
     this->keypad = keypad;
 }
 
+// Prints Expression
 void Calculator::DisplayExpression() {
     lcd->clear();
     lcd->setCursor(0, 0);
     lcd->print(expression);
 }
 
-// print answer
+// Print Answer
 void Calculator::DisplayAnswer(String answer) {
     lcd->setCursor(0, 1);
     lcd->print(answer);
 }
 
+// Turns on/off Display
 void Calculator::ToggleDisplay() {
     power = !power;
     lcd->clear();
@@ -318,6 +328,7 @@ void Calculator::ToggleDisplay() {
     digitalWrite(16, power);
 }
 
+// Resets the memory
 void Calculator::Reset() {
     expression = "";
     currentTokenIndex = 0;
