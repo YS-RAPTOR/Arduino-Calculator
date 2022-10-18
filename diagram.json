@@ -1,86 +1,342 @@
 {
   "version": 1,
-  "author": "Lab 1 Group 3",
+  "author": "Group 3",
   "editor": "wokwi",
   "parts": [
     {
       "type": "wokwi-arduino-mega",
       "id": "mega",
-      "top": 121.18,
-      "left": -29.05,
+      "top": 0,
+      "left": 0,
       "attrs": {}
     },
     {
-      "type": "wokwi-membrane-keypad",
-      "id": "keypad1",
-      "top": -379.27,
-      "left": 127.74,
-      "attrs": {
-        "keys": [
-          "1",
-          "2",
-          "3",
-          "x",
-          "4",
-          "5",
-          "6",
-          "-",
-          "7",
-          "8",
-          "9",
-          "+",
-          "On/off",
-          "0",
-          ".",
-          "="
-        ]
-      }
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 0,
+      "left": 500,
+      "attrs": { "color": "red", "label": " Power", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn9",
+      "top": 60,
+      "left": 500,
+      "attrs": { "color": "yellow", "label": " C", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn17",
+      "top": 120,
+      "left": 500,
+      "attrs": { "color": "yellow", "label": " CE", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn25",
+      "top": 180,
+      "left": 500,
+      "attrs": { "color": "red", "label": " Menu", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn2",
+      "top": 0,
+      "left": 560,
+      "attrs": { "color": "green", "label": " 1", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn10",
+      "top": 60,
+      "left": 560,
+      "attrs": { "color": "green", "label": " 4", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn18",
+      "top": 120,
+      "left": 560,
+      "attrs": { "color": "green", "label": " 7", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn26",
+      "top": 180,
+      "left": 560,
+      "attrs": { "color": "green", "label": " .", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn3",
+      "top": 0,
+      "left": 620,
+      "attrs": { "color": "green", "label": " 2", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn11",
+      "top": 60,
+      "left": 620,
+      "attrs": { "color": "green", "label": " 5", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn19",
+      "top": 120,
+      "left": 620,
+      "attrs": { "color": "green", "label": " 8", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn27",
+      "top": 180,
+      "left": 620,
+      "attrs": { "color": "green", "label": " 0", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn4",
+      "top": 0,
+      "left": 680,
+      "attrs": { "color": "green", "label": " 3", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn12",
+      "top": 60,
+      "left": 680,
+      "attrs": { "color": "green", "label": " 6", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn20",
+      "top": 120,
+      "left": 680,
+      "attrs": { "color": "green", "label": " 9", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn28",
+      "top": 180,
+      "left": 680,
+      "attrs": { "color": "black", "label": " =", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn5",
+      "top": 0,
+      "left": 740,
+      "attrs": { "color": "black", "label": " +", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn13",
+      "top": 60,
+      "left": 740,
+      "attrs": { "color": "black", "label": " -", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn21",
+      "top": 120,
+      "left": 740,
+      "attrs": { "color": "black", "label": " *", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn29",
+      "top": 180,
+      "left": 740,
+      "attrs": { "color": "black", "label": " /", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn6",
+      "top": 0,
+      "left": 800,
+      "attrs": { "color": "black", "label": " √", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn14",
+      "top": 60,
+      "left": 800,
+      "attrs": { "color": "black", "label": " +/-", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn22",
+      "top": 120,
+      "left": 800,
+      "attrs": { "color": "black", "label": " %", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn30",
+      "top": 180,
+      "left": 800,
+      "attrs": { "color": "yellow", "label": " Ans", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn7",
+      "top": 0,
+      "left": 860,
+      "attrs": { "color": "blue", "label": " ←", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn15",
+      "top": 60,
+      "left": 860,
+      "attrs": { "color": "black", "label": " (", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn23",
+      "top": 120,
+      "left": 860,
+      "attrs": { "color": "yellow", "label": " MR", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn31",
+      "top": 180,
+      "left": 860,
+      "attrs": { "color": "yellow", "label": " M+", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn8",
+      "top": 0,
+      "left": 920,
+      "attrs": { "color": "blue", "label": " →", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn16",
+      "top": 60,
+      "left": 920,
+      "attrs": { "color": "black", "label": " )", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn24",
+      "top": 120,
+      "left": 920,
+      "attrs": { "color": "yellow", "label": " MC", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn32",
+      "top": 179.19,
+      "left": 920,
+      "attrs": { "color": "yellow", "label": " M-", "bounce": "0" }
     },
     {
       "type": "wokwi-lcd1602",
       "id": "lcd1",
-      "top": -270.9,
-      "left": -277.14,
+      "top": -188.24,
+      "left": 500.55,
       "attrs": {}
     },
     {
       "type": "wokwi-resistor",
       "id": "r1",
-      "top": -9.04,
-      "left": -217.98,
-      "attrs": { "value": "1000" }
+      "top": 5.6,
+      "left": 386.4,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-ds1307",
+      "id": "rtc1",
+      "top": -104.35,
+      "left": 126.4,
+      "rotate": 270,
+      "attrs": {}
     }
   ],
   "connections": [
-    ["keypad1:C4", "mega:2", "green", ["v0"]],
-    ["keypad1:C3", "mega:3", "green", ["v0"]],
-    ["keypad1:C2", "mega:4", "green", ["v0"]],
-    ["keypad1:C1", "mega:5", "green", ["v0"]],
-    ["keypad1:R4", "mega:6", "green", ["v0"]],
-    ["keypad1:R3", "mega:7", "green", ["v0"]],
-    ["keypad1:R2", "mega:8", "green", ["v0"]],
-    ["keypad1:R1", "mega:9", "green", ["v0"]],
-    ["mega:5V", "lcd1:VDD", "red", ["v25.14", "h-0.06"]],
-    ["mega:GND.1", "lcd1:VSS", "black", ["v-19.88", "h-333.67", "v-0.4"]],
-    [
-      "mega:GND.1",
-      "lcd1:RW",
-      "black",
-      ["v-20.16", "h-332.35", "v-227.65", "h2.28"]
-    ],
-    [
-      "mega:GND.1",
-      "lcd1:K",
-      "black",
-      ["v-20.68", "h-332.93", "v-227.31", "h7.55"]
-    ],
-    ["lcd1:A", "r1:2", "blue", ["v0"]],
-    ["lcd1:D7", "mega:10", "violet", ["v158.91", "h235.5"]],
-    ["mega:11", "lcd1:D6", "violet", ["v-103.35", "h-247.73", "v-166.76"]],
-    ["mega:12", "lcd1:D5", "violet", ["v-94.72", "h-247.15", "v-175.39"]],
-    ["mega:13", "lcd1:D4", "violet", ["v-86.09", "h-247.56", "v-184.02"]],
-    ["mega:14", "lcd1:RS", "orange", ["v-51.39", "h-444.65"]],
-    ["lcd1:E", "mega:15", "gold", ["v229.84", "h27.49"]],
-    ["mega:16", "r1:1", "blue", ["v-33.26", "h-486.54", "v-97.15"]]
+    ["mega:18", "btn1:1.l", "limegreen", []],
+    ["btn1:1.l", "btn2:1.l", "red", ["v-13", "h60"]],
+    ["btn2:1.l", "btn3:1.l", "red", ["v-13", "h60"]],
+    ["btn3:1.l", "btn4:1.l", "red", ["v-13", "h60"]],
+    ["btn4:1.l", "btn5:1.l", "red", ["v-13", "h60"]],
+    ["btn5:1.l", "btn6:1.l", "red", ["v-13", "h60"]],
+    ["btn6:1.l", "btn7:1.l", "red", ["v-13", "h60"]],
+    ["btn7:1.l", "btn8:1.l", "red", ["v-13", "h60"]],
+    ["mega:19", "btn9:1.l", "limegreen", []],
+    ["btn9:1.l", "btn10:1.l", "red", ["v-13", "h60"]],
+    ["btn10:1.l", "btn11:1.l", "red", ["v-13", "h60"]],
+    ["btn11:1.l", "btn12:1.l", "red", ["v-13", "h60"]],
+    ["btn12:1.l", "btn13:1.l", "red", ["v-13", "h60"]],
+    ["btn13:1.l", "btn14:1.l", "red", ["v-13", "h60"]],
+    ["btn14:1.l", "btn15:1.l", "red", ["v-13", "h60"]],
+    ["btn15:1.l", "btn16:1.l", "red", ["v-13", "h60"]],
+    ["mega:2", "btn17:1.l", "limegreen", []],
+    ["btn17:1.l", "btn18:1.l", "red", ["v-13", "h60"]],
+    ["btn18:1.l", "btn19:1.l", "red", ["v-13", "h60"]],
+    ["btn19:1.l", "btn20:1.l", "red", ["v-13", "h60"]],
+    ["btn20:1.l", "btn21:1.l", "red", ["v-13", "h60"]],
+    ["btn21:1.l", "btn22:1.l", "red", ["v-13", "h60"]],
+    ["btn22:1.l", "btn23:1.l", "red", ["v-13", "h60"]],
+    ["btn23:1.l", "btn24:1.l", "red", ["v-13", "h60"]],
+    ["mega:3", "btn25:1.l", "limegreen", []],
+    ["btn25:1.l", "btn26:1.l", "red", ["v-13", "h60"]],
+    ["btn26:1.l", "btn27:1.l", "red", ["v-13", "h60"]],
+    ["btn27:1.l", "btn28:1.l", "red", ["v-13", "h60"]],
+    ["btn28:1.l", "btn29:1.l", "red", ["v-13", "h60"]],
+    ["btn29:1.l", "btn30:1.l", "red", ["v-13", "h60"]],
+    ["btn30:1.l", "btn31:1.l", "red", ["v-13", "h60"]],
+    ["btn31:1.l", "btn32:1.l", "red", ["v-13", "h60"]],
+    ["btn1:2.r", "btn9:2.r", "black", []],
+    ["btn9:2.r", "btn17:2.r", "black", []],
+    ["btn17:2.r", "btn25:2.r", "black", []],
+    ["btn25:2.r", "mega:39", "gray", ["v30", "h0"]],
+    ["btn2:2.r", "btn10:2.r", "black", []],
+    ["btn10:2.r", "btn18:2.r", "black", []],
+    ["btn18:2.r", "btn26:2.r", "black", []],
+    ["btn26:2.r", "mega:41", "gray", ["v30", "h0"]],
+    ["btn3:2.r", "btn11:2.r", "black", []],
+    ["btn11:2.r", "btn19:2.r", "black", []],
+    ["btn19:2.r", "btn27:2.r", "black", []],
+    ["btn27:2.r", "mega:43", "gray", ["v30", "h0"]],
+    ["btn4:2.r", "btn12:2.r", "black", []],
+    ["btn12:2.r", "btn20:2.r", "black", []],
+    ["btn20:2.r", "btn28:2.r", "black", []],
+    ["btn28:2.r", "mega:45", "gray", ["v30", "h0"]],
+    ["btn5:2.r", "btn13:2.r", "black", []],
+    ["btn13:2.r", "btn21:2.r", "black", []],
+    ["btn21:2.r", "btn29:2.r", "black", []],
+    ["btn29:2.r", "mega:47", "gray", ["v30", "h0"]],
+    ["btn6:2.r", "btn14:2.r", "black", []],
+    ["btn14:2.r", "btn22:2.r", "black", []],
+    ["btn22:2.r", "btn30:2.r", "black", []],
+    ["btn30:2.r", "mega:49", "gray", ["v30", "h0"]],
+    ["btn7:2.r", "btn15:2.r", "black", []],
+    ["btn15:2.r", "btn23:2.r", "black", []],
+    ["btn23:2.r", "btn31:2.r", "black", []],
+    ["btn31:2.r", "mega:51", "gray", ["v30", "h0"]],
+    ["btn8:2.r", "btn16:2.r", "black", []],
+    ["btn16:2.r", "btn24:2.r", "black", []],
+    ["btn24:2.r", "btn32:2.r", "black", []],
+    ["btn32:2.r", "mega:53", "gray", ["v30", "h0"]],
+    ["mega:GND.1", "lcd1:VSS", "black", ["h381.59", "v-68"]],
+    ["mega:GND.1", "lcd1:K", "black", ["h381.32", "v-66.27"]],
+    ["mega:23", "r1:1", "green", ["v0"]],
+    ["mega:GND.1", "lcd1:RW", "black", ["h381.78", "v-66.27"]],
+    ["mega:5V.2", "lcd1:VDD", "red", ["v0", "h129.48", "v-65.54"]],
+    ["lcd1:A", "r1:2", "green", ["h-166.61", "v71.87"]],
+    ["lcd1:RS", "mega:12", "blue", ["h-60.34", "v66.27"]],
+    ["lcd1:E", "mega:11", "purple", ["h-79.58", "v66.27"]],
+    ["lcd1:D4", "mega:10", "green", ["h-126.8", "v66.27"]],
+    ["lcd1:D5", "mega:9", "green", ["h-137.86", "v66.27"]],
+    ["lcd1:D6", "mega:8", "green", ["h-147.36", "v66.27"]],
+    ["lcd1:D7", "mega:7", "green", ["h-157.18", "v66.27"]],
+    ["rtc1:GND", "mega:GND.3", "black", ["v0"]],
+    ["rtc1:5V", "mega:5V", "red", ["v0"]],
+    ["rtc1:SDA", "mega:SDA", "green", ["v0"]],
+    ["rtc1:SCL", "mega:SCL", "green", ["v0"]]
   ]
 }
