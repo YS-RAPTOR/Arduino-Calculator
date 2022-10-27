@@ -56,9 +56,11 @@ inline byte Calculator::Precedence(char op) {
 String Calculator::DoubleToString(double d) {
     String str = String(d, MAX_DECIMALS);
     byte i = str.length() - 1;
+    // Removes trailing zeros
     for (; i >= 0; i--) {
         if (str[i] != '0' || str[i] == '.') break;
     }
+    // Makes sure the decimal is removed if it is a whole number
     str = (str[i] == '.') ? str.substring(0, i) : str.substring(0, i + 1);
     return str;
 }
@@ -217,6 +219,7 @@ bool Calculator::Calculate() {
                 return false;
             }
 
+            // Check if Expression is Formatted Correctly. Can only have bracket after a function
             if (i != expression.length() - 1 && expression[i + 1] != '(') {
                 return false;
             }
@@ -235,19 +238,25 @@ bool Calculator::Calculate() {
     while (operatorStackTop > 0) {
         ApplyOperation(number1, number2);
     }
+
+    // Answer is the remaining digit in the digit stack
     answer = PeekDigit();
     return true;
 }
 
 void Calculator::ApplyOperation(double& num1, double& num2) {
+    // Get a digit from the stack
     num2 = PeekDigit();
     PopDigit();
 
+    // If it is a function only one digit is needed so second digit is not needed. If it is an operator then two digits are needed.
+    // So second from the stack is acquired
     if (!IsFunction(PeekOperator())) {
         num1 = PeekDigit();
         PopDigit();
     }
 
+    // Apply the operation
     switch (PeekOperator()) {
         case '+':
             PushDigit(num1 + num2);
@@ -269,6 +278,7 @@ void Calculator::ApplyOperation(double& num1, double& num2) {
             break;
     }
 
+    // Remove operator from the operatorStack
     PopOperator();
 }
 
@@ -292,16 +302,19 @@ void Calculator::KeyCheck() {
         // Open Brackets
         case '(':
             if (InsertKey())
+                // Code to keep track oi the brackets in the expression are all closed
                 brackets++;
             break;
         // Close Brackets
         case ')':
             if (InsertKey())
+                // Code to keep track oi the brackets in the expression are all closed
                 brackets--;
             break;
         // Square Root
         case 'S':
             if (InsertKey("S("))
+                // Code to keep track oi the brackets in the expression are all closed
                 brackets++;
             break;
         // +/-
@@ -330,7 +343,9 @@ void Calculator::KeyCheck() {
             break;
         // Add Answer to Memory
         case 'a':
+            // If there is an expression calculate it first
             if (expression.length() != 0) {
+                // If there is an error do not add to memory and Display Error
                 if (!Calculate()) {
                     DisplayError();
                     return;
@@ -341,7 +356,9 @@ void Calculator::KeyCheck() {
             break;
         // Subtract Answer from Memory
         case 's':
+            // If there is an expression calculate it first
             if (expression.length() != 0) {
+                // If there is an error do not add to memory and Display Error
                 if (!Calculate()) {
                     DisplayError();
                     return;
@@ -360,10 +377,12 @@ void Calculator::KeyCheck() {
             break;
         // Calculate Answer
         case '=':
+            // Calculate and if there is an error display error
             if (!Calculate()) {
                 DisplayError();
                 return;
             }
+            // Otherwise display answer
             DisplayAnswer();
             Reset();
             return;
@@ -375,15 +394,16 @@ void Calculator::KeyCheck() {
         default:
             break;
     }
-    lcd->clear();
     DisplayExpression();
 }
 
 void Calculator::ToggleDisplay() {
+    // Toggle Power
     *power = !*power;
     lcd->clear();
     digitalWrite(LCD_ANODE, *power);
     Reset();
+    // Turn off cursor if power is off
     if (*power) {
         lcd->cursor();
     } else {
@@ -392,10 +412,13 @@ void Calculator::ToggleDisplay() {
 }
 
 bool Calculator::InsertKey(String&& str) {
+    // If there is no space do not insert.
     if (expression.length() + str.length() > MAX_EXPRESSION_LENGTH) return false;
 
+    // Insert string to the left of the cursor
     temp = expression.substring(drawLocation + cursorPosition, expression.length());
     expression = expression.substring(0, drawLocation + cursorPosition) + str + temp;
+    // Move right for every character inserted
     for (byte i = 0; i < str.length(); i++) {
         MoveRight();
     }
@@ -403,36 +426,50 @@ bool Calculator::InsertKey(String&& str) {
 }
 
 bool Calculator::InsertKey() {
+    // If there is no space do not insert.
     if (expression.length() + 1 > MAX_EXPRESSION_LENGTH) return false;
 
+    // Insert key to the left of the cursor
     temp = expression.substring(drawLocation + cursorPosition, expression.length());
     expression = expression.substring(0, drawLocation + cursorPosition) + *key + temp;
+    // Move right as the key is inserted
     MoveRight();
     return true;
 }
 
 void Calculator::Backspace() {
+    // Do not backspace if cursor is at the start
     if (cursorPosition + drawLocation == 0) return;
+
+    // Code to keep track oi the brackets in the expression are all closed
     if (expression[cursorPosition + drawLocation - 1] == '(') {
         brackets--;
     } else if (expression[cursorPosition + drawLocation - 1] == ')') {
         brackets++;
     }
 
+    // Remove character to the left of the cursor
     temp = expression.substring(drawLocation + cursorPosition, expression.length());
     expression = expression.substring(0, drawLocation + cursorPosition - 1) + temp;
+
+    // Move left as the character is removed
     if (!drawLocation)
         MoveLeft();
     else {
+        // If the cursor location is beyond the display then move the display left
         drawLocation--;
     }
 }
 
 void Calculator::MoveLeft() {
+    // Clamp upperCursorLimit to SCREEN_LENGTH
     upperCursorLimit = (expression.length() < SCREEN_LENGTH) ? expression.length() : SCREEN_LENGTH;
+
+    // If cursor is not at the start move left
     if (cursorPosition > LOWER_CURSOR_LIMIT) {
         cursorPosition--;
     } else {
+        // If cursor is at the start move the display left until at the beginning
         if (drawLocation > LOWER_CURSOR_LIMIT) {
             drawLocation--;
         }
@@ -440,10 +477,14 @@ void Calculator::MoveLeft() {
 }
 
 void Calculator::MoveRight() {
+    // Clamp upperCursorLimit to SCREEN_LENGTH
     upperCursorLimit = (expression.length() < SCREEN_LENGTH) ? expression.length() : SCREEN_LENGTH;
+
+    // If cursor is not at the end move right
     if (cursorPosition < upperCursorLimit) {
         cursorPosition++;
     } else {
+        // If cursor is at the end move the display right until at the screen is filled with the last section of the expression
         if (cursorPosition == (SCREEN_LENGTH) && drawLocation < (expression.length() - (SCREEN_LENGTH))) {
             drawLocation++;
         }
@@ -451,12 +492,14 @@ void Calculator::MoveRight() {
 }
 
 void Calculator::DisplayAnswer() {
+    // Display answer
     lcd->clear();
     lcd->setCursor(0, 1);
     lcd->print(DoubleToString(answer));
 }
 
 void Calculator::DisplayError() {
+    // Display error
     lcd->clear();
     lcd->setCursor(0, 1);
     lcd->print(FORMAT_ERROR);
@@ -465,8 +508,8 @@ void Calculator::DisplayError() {
 void Calculator::DisplayExpression() {
     lcd->clear();
     lcd->setCursor(0, 0);
-    // TODO Add Arrows If Justin Wants
     for (byte i = drawLocation; i < drawLocation + upperCursorLimit + 1; i++) {
+        // Print special character for square root
         if (IsFunction(expression[i])) {
             lcd->print('\x03');
             continue;
@@ -477,6 +520,7 @@ void Calculator::DisplayExpression() {
 }
 
 void Calculator::Reset() {
+    // Reset all variables responsible for cursor and display
     expression = "";
     cursorPosition = 0;
     brackets = 0;
@@ -489,21 +533,23 @@ bool Calculator::IsSyntaxError() {
         return true;
     }
 
+    // If there all brackets are not closed return true
     if (brackets) {
         return true;
     }
 
-    // Cannot Start with Operator or )
+    // Cannot Start with Operator or ) or percentage
     if (IsOperator(expression[0]) || expression[0] == ')' || expression[0] == PERCENTAGE) {
         if (!IsMultiplier(expression[0])) {
             return true;
         }
     }
 
-    // Cannot End with Operator, character or (
+    // Cannot End with Operator, function or (
     if ((IsOperator(expression[expression.length() - 1]) || expression[expression.length() - 1] == '(') || IsFunction(expression[expression.length() - 1])) {
         return true;
     }
 
+    // No Syntax Errors
     return false;
 }

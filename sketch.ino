@@ -7,10 +7,13 @@
 
 // 0 - Menu, 1 - Change Password, 2 - Timer, 3 - Calculator
 byte state;
+
+// Global variables
 bool keyPressed = false;
 char key;
 bool power = false;
 
+// Systems
 Menu menu(StateChange);
 Password password(StateChange);
 Int_Keypad Keypad(rowPins, colPins, keys, &keyPressed, &key);
@@ -23,7 +26,7 @@ void setup() {
     Serial.begin(9600);
     Keypad.begin();
     password.begin();
-    lcd.begin(SCREEN_LENGTH, LCD_ROWS);
+    lcd.begin(SCREEN_LENGTH + 1, LCD_ROWS);
     calculator.begin();
     timer.begin();
     pinMode(LCD_ANODE, OUTPUT);
@@ -31,6 +34,7 @@ void setup() {
 }
 
 void loop() {
+    // AcceptInput depending on state
     switch (state) {
         case 0:
             menu.AcceptInput();
@@ -49,10 +53,12 @@ void loop() {
             state = 0;
             break;
     }
+    // Update timer Always
     timer.Update();
 }
 
 void StateChange(byte newState) {
+    // Change state and run functions to setup the systems for each state
     switch (newState) {
         case 0:
             TurnDisplayOff();

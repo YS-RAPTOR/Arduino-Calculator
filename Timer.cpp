@@ -1,17 +1,22 @@
 #include "Timer.h"
 
+// Constructor/ Initializers
+
 Timer::Timer(bool* keyPressed, char* key, bool* power, void (*StateChange)(byte), LiquidCrystal* lcd) : keyPressed(keyPressed), key(key), power(power), StateChange(StateChange), lcd(lcd) {
 }
 
 void Timer::begin() {
+    // Initialize the RTC
     Wire.begin();
     rtc.begin();
     rtc.adjust(DateTime(ReferenceDate));
 }
 
 void Timer::EnterTimer() {
+    // Turns on Display
     *power = false;
     ToggleDisplay();
+    // Display settings for the Timer
     DisplayInstructions();
 }
 
@@ -26,6 +31,12 @@ void Timer::Update() {
         // Stop Timer and Reset
         Stop();
         Reset();
+
+        // Make sure the Serial is flushed
+        *keyPressed = false;
+        Serial.readString();
+        Serial.flush();
+
         bool prevPower = *power;
         // Wait For Input to Stop Flashing Screen
         while (!*keyPressed && Serial.available() == 0) {
@@ -36,6 +47,7 @@ void Timer::Update() {
 
         digitalWrite(LCD_ANODE, *power);
 
+        // Causes the AcceptInput to run at least once to refresh everything.
         *keyPressed = true;
         *key = ' ';
         Serial.readString();
@@ -67,19 +79,22 @@ void Timer::UpdateTimerString() {
 }
 
 void Timer::ToggleDisplay() {
+    // Toggles Power
     *power = !*power;
     lcd->clear();
     digitalWrite(LCD_ANODE, *power);
     state = (state == 2) ? 0 : state;
-    Reset();
     lcd->noCursor();
 }
 
 void Timer::KeyCheck() {
+    // ToggleDisplay if power is pressed
     if (*key == 'O') ToggleDisplay();
 
+    // No Input works if power is pressed
     if (!*power) return;
 
+    // Goes to menu if menu is pressed
     if (*key == 'M') {
         StateChange(0);
         return;
@@ -143,13 +158,9 @@ void Timer::KeyCheck() {
 
 void Timer::Start() {
     if (setTime == 0) return;
-    // If reset Start from Beginning else Resume
-    if (remainingTime == setTime) {
-        // Start from Beginning
-        startTime = rtc.now().secondstime();
-    } else {
-        startTime = rtc.now().secondstime() - (setTime - remainingTime);
-    }
+
+    // Set the start time
+    startTime = rtc.now().secondstime() - (setTime - remainingTime);
     state = 1;
 }
 
@@ -174,6 +185,7 @@ void Timer::Set() {
 void Timer::DisplayInstructions() {
     lcd->clear();
 
+    // When the state is in SET Mode, printing changes in timerString is handled here
     if (state == 2) {
         lcd->print(timerString);
     }
@@ -207,14 +219,17 @@ void Timer::DisplayInstructions() {
 }
 
 void Timer::InsertKey() {
-    if ((cursorPosition == 3 || cursorPosition == 6) && (*key) > '5') {  // Skip the Colon
+    // When in seconds and minutes the max value is 59.
+    if ((cursorPosition == 3 || cursorPosition == 6) && (*key) > '5') {
         *key = '5';
     }
 
+    // Change character of timerString in the cursorPosition
     timerString[cursorPosition] = *key;
 }
 
 void Timer::MoveLeft() {
+    // Clamp the cursorPosition to greater than 0
     if (cursorPosition > 0) {
         cursorPosition--;
     }
@@ -225,6 +240,7 @@ void Timer::MoveLeft() {
 }
 
 void Timer::MoveRight() {
+    // Clamp the cursorPosition to less than length of timerString - 1
     if (cursorPosition < timerString.length() - 1) {
         cursorPosition++;
     }

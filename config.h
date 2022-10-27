@@ -17,7 +17,7 @@
 #define FORMAT_ERROR "Syntax Error"
 
 #define LOWER_CURSOR_LIMIT 0
-#define SCREEN_LENGTH 16
+#define SCREEN_LENGTH 15
 #define LCD_ANODE 23
 #define LCD_DATA_PINS 10, 9, 8, 7
 #define LCD_RS 12
