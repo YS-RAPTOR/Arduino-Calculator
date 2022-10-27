@@ -1,14 +1,14 @@
 #include "Int_Keypad.h"
 
-Int_Keypad::Int_Keypad(byte rowPins[NO_OF_ROWS], byte colPins[NO_OF_COLS], char keys[NO_OF_ROWS * NO_OF_COLS], bool* keyPressed, char* key) {
+Int_Keypad::Int_Keypad(byte rowPins[NO_OF_ROWS], byte colPins[NO_OF_COLS], char keys[NO_OF_ROWS * NO_OF_COLS], bool* keyPressed, char* key) : keyPressed(keyPressed), key(key) {
+    // Initialize the rowPins, colPins and keys
     memcpy(this->rowPins, rowPins, NO_OF_ROWS);
     memcpy(this->colPins, colPins, NO_OF_COLS);
     memcpy(this->keys, keys, NO_OF_ROWS * NO_OF_COLS);
-    this->keyPressed = keyPressed;
-    this->key = key;
 }
 
 void Int_Keypad::begin() {
+    // Set the pin Modes for the rows and columns
     for (byte i = 0; i < NO_OF_ROWS; i++) {
         pinMode(rowPins[i], INPUT_PULLUP);
     }
@@ -19,6 +19,7 @@ void Int_Keypad::begin() {
 }
 
 void Int_Keypad::Enable() {
+    // Attach Interrupts
     attachInterrupt(digitalPinToInterrupt(rowPins[0]), Int_Keypad::row1, FALLING);
     attachInterrupt(digitalPinToInterrupt(rowPins[1]), Int_Keypad::row2, FALLING);
     attachInterrupt(digitalPinToInterrupt(rowPins[2]), Int_Keypad::row3, FALLING);
@@ -26,6 +27,7 @@ void Int_Keypad::Enable() {
 }
 
 void Int_Keypad::Disable() {
+    // Detach Interrupts
     detachInterrupt(digitalPinToInterrupt(rowPins[0]));
     detachInterrupt(digitalPinToInterrupt(rowPins[1]));
     detachInterrupt(digitalPinToInterrupt(rowPins[2]));

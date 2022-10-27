@@ -66,14 +66,18 @@ void Timer::UpdateTimerString() {
     // When in State Set the timerString will be displayed for Timer Value Selection, else just print the value in remainingTime
     if (state != 2 && *power) {
         lcd->setCursor(0, 0);
+        // Hours
         temp = remainingTime / 3600;
         timerString = (temp) < 10 ? "0" + String(temp) : String(temp);
         timerString += ":";
+        // Minutes
         temp = (remainingTime / 60) % 60;
         timerString += (temp) < 10 ? "0" + String(temp) : String(temp);
         timerString += ':';
+        // Seconds
         temp = remainingTime % 60;
         timerString += (temp) < 10 ? "0" + String(temp) : String(temp);
+
         lcd->print(timerString);
     }
 }
